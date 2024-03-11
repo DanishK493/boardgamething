@@ -86,15 +86,20 @@ def select_tower(mouse_pos):
 def clear_selection():
    for tower in tower_group:
       tower.selected = False
+def display_text(text,screen):
+  font = pg.font.Font(None,36)
+  text_surface = font.render(text,True,(255,255,255))
+  text_rect = text_surface.get_rect(center=(90,80))
+  screen.blit(text_surface,text_rect)
+  pg.display.flip()
+  pg.time.wait(3000)
 def draw_event_cards(num_cards):
-    """Draw a specified number of event cards."""
     drawn_cards = []
     for _ in range(num_cards):
         card = random.choice(e.event_cards)
         drawn_cards.append(card)
     return drawn_cards
 def apply_event_card_effects(event_card, towers):
-    """Apply the effects of an event card to the player and towers."""
     global event_card_applied
     if event_card_applied == False:
       effect = event_card["effect"]
@@ -104,7 +109,6 @@ def apply_event_card_effects(event_card, towers):
           print(f'event card {event_card} applied')
 
 def double_tower_range(towers):
-    """Double the range of all towers."""
     for tower in towers:
         tower.range *= 2
         new_range_image = pg.Surface((tower.range * 2, tower.range * 2))
@@ -112,8 +116,6 @@ def double_tower_range(towers):
         new_range_image.set_colorkey((0, 0, 0))
         pg.draw.circle(new_range_image, "grey100", (tower.range, tower.range), tower.range)
         new_range_image.set_alpha(100)
-
-        # Update tower's range image and rect
         tower.range_image = new_range_image
         tower.range_rect = tower.range_image.get_rect()
         tower.range_rect.center = tower.rect.center
@@ -151,7 +153,7 @@ while run:
     if selected_tower:
        selected_tower.selected = True
 
-
+    
     world.draw(screen)
     
     enemy_group.draw(screen)
@@ -164,8 +166,16 @@ while run:
         if world.level is not 1 and clicked:
                 if draw_cards_button.draw(screen):
                   player_event_cards = draw_event_cards(1)
-                  for event_card in player_event_cards:
-                      apply_event_card_effects(event_card, tower_group)
+                  apply_event_card_effects(player_event_cards[0], tower_group)
+                  pg.draw.rect(screen,"dodgerblue",(40,50,200,100),border_radius = 15)
+                  draw_text("card aquired", large_font, "grey0", 70,80)
+                  draw_text(f"{player_event_cards[0].get('name')}",large_font,"grey0",70,100)
+                  pg.display.flip()
+                  pg.time.wait(3000)
+                  
+
+                      
+                      
         if start_button.draw(screen):
           level_started = True
       else:
@@ -193,7 +203,6 @@ while run:
         #             apply_event_card_effects(event_card, tower_group)
         #             print(f'event card {event_card} applied')
 
-            
             
       draw_text(str(c.BUY_COST),text_font,"grey100",c.SCREEN_WIDTH+75,60)
       screen.blit(bread_image, (c.SCREEN_WIDTH+55, 60))
