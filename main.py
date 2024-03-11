@@ -86,13 +86,7 @@ def select_tower(mouse_pos):
 def clear_selection():
    for tower in tower_group:
       tower.selected = False
-def display_text(text,screen):
-  font = pg.font.Font(None,36)
-  text_surface = font.render(text,True,(255,255,255))
-  text_rect = text_surface.get_rect(center=(90,80))
-  screen.blit(text_surface,text_rect)
-  pg.display.flip()
-  pg.time.wait(3000)
+
 def draw_event_cards(num_cards):
     drawn_cards = []
     for _ in range(num_cards):
@@ -107,6 +101,8 @@ def apply_event_card_effects(event_card, towers):
           double_tower_range(towers)
           event_card_applied = True
           print(f'event card {event_card} applied')
+      if effect["type"] == "Good Harvest":
+        world.money += 100
 
 def double_tower_range(towers):
     for tower in towers:
