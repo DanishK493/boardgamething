@@ -22,7 +22,7 @@ last_enemy_spawn = pg.time.get_ticks()
 placing_towers = False
 selected_tower = None
 
-map_image = pg.image.load('images/goobersvsgoobbers.png').convert_alpha()
+map_image = pg.image.load('images/goobersvsgoobbers1.png').convert_alpha()
 
 tower_sheet = pg.image.load('images/towers1.png').convert_alpha()
 
@@ -44,7 +44,7 @@ bread_image = pg.image.load('images/bread.png').convert_alpha()
 heart_image = pg.image.load('images/heart.png').convert_alpha()
 logo_image = pg.image.load('images/logo.png').convert_alpha()
 draw_cards_image = pg.image.load('images/draw_cards.png')
-with open('goobersvsgoobbers.tmj') as file:
+with open('goobersvsgoobbers1.tmj') as file:
     world_data = json.load(file)
 
 text_font = pg.font.SysFont("Consolas",12,bold=True)
@@ -98,15 +98,26 @@ def apply_event_card_effects(event_card, towers):
     if event_card_applied == False:
       effect = event_card["effect"]
       if effect["type"] == "double_range":
-          double_tower_range(towers)
+          change_tower_range(towers, 2)
           event_card_applied = True
           print(f'event card {event_card} applied')
-      if effect["type"] == "Good Harvest":
+      if effect["type"] == "gain_bread":
         world.money += 100
+        event_card_applied = True
+        print(f'event card {event_card} applied')
+      if effect["type"] == "lose_health":
+         world.health -= 20
+         event_card_applied = True
+         print(f'event card {event_card} applied')
+      if effect["type"] == "half_range":
+         change_tower_range(towers, 0.5)
+         event_card_applied = True
+         print(f'event card {event_card} applied')
 
-def double_tower_range(towers):
+
+def change_tower_range(towers, range):
     for tower in towers:
-        tower.range *= 2
+        tower.range *= range
         new_range_image = pg.Surface((tower.range * 2, tower.range * 2))
         new_range_image.fill((0, 0, 0))
         new_range_image.set_colorkey((0, 0, 0))
@@ -193,11 +204,16 @@ while run:
         world.reset_level()
         world.process_enemies()
         event_card_applied = False
-        # if draw_cards_button.draw(screen):
-        #         player_event_cards = draw_event_cards(1)
-        #         for event_card in player_event_cards:
-        #             apply_event_card_effects(event_card, tower_group)
-        #             print(f'event card {event_card} applied')
+        for tower in tower_group:
+          tower.range = 45
+          new_range_image = pg.Surface((tower.range, tower.range))
+          new_range_image.fill((0, 0, 0))
+          new_range_image.set_colorkey((0, 0, 0))
+          pg.draw.circle(new_range_image, "grey100", (tower.range * 2, tower.range * 2), tower.range)
+          new_range_image.set_alpha(100)
+          tower.range_image = new_range_image
+          tower.range_rect = tower.range_image.get_rect()
+          tower.range_rect.center = tower.rect.center
 
             
       draw_text(str(c.BUY_COST),text_font,"grey100",c.SCREEN_WIDTH+75,60)
