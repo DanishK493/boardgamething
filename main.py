@@ -113,6 +113,10 @@ def apply_event_card_effects(event_card, towers):
          change_tower_range(towers, 0.5)
          event_card_applied = True
          print(f'event card {event_card} applied')
+      if effect["type"] == "increase_health":
+        world.health += 20
+        event_card_applied = True
+        print(f'event card {event_card} applied')
 
 
 def change_tower_range(towers, range):

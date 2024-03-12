@@ -58,7 +58,7 @@ class Tower(pg.sprite.Sprite):
 
   def play_animation(self):
     self.original_image = self.animation_list[self.frame_index]
-    if pg.time.get_ticks()- self.update_time > c.ANIMATIOn_DELAY:
+    if pg.time.get_ticks()- self.update_time > c.ANIMATION_DELAY:
       self.update_time = pg.time.get_ticks()
       self.frame_index += 1
       if self.frame_index >= len(self.animation_list):

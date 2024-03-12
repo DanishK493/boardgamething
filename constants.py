@@ -6,13 +6,13 @@ SCREEN_WIDTH = TILE_SIZE * COLS
 SCREEN_HEIGHT = TILE_SIZE * ROWS
 FPS = 60
 ANIMATION_STEPS = 3
-ANIMATIOn_DELAY = 150
+ANIMATION_DELAY = 150
 TOWER_LEVELS = 4
 SPAWN_COOLDOWN = 400
 HEALTH = 100
 MONEY = 650
-BUY_COST = 200
-UPGRADE_COST = 100
+BUY_COST = 400
+UPGRADE_COST = 200
 DAMAGE = 5
 KILL_REWARD = 1
 LEVEL_COMPLETE_REWARD = 100
@@ -25,15 +25,15 @@ TOWER_DATA = [
 ]
 ENEMY_DATA = {
     "weak": {
-    "health": 10,
+    "health": 15,
     "speed": 1
   },
     "medium": {
-    "health": 20,
+    "health": 25,
     "speed": 2
   },
     "strong": {
-    "health": 30,
+    "health": 35,
     "speed": 3
   }
 }
